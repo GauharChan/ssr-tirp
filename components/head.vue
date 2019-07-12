@@ -14,9 +14,9 @@
       </nav>
       <!-- 用户信息 -->
       <div class="userInfo">
-        <!-- <nuxt-link to="/user/login">登录 / 注册</nuxt-link> -->
+        <nuxt-link to="/user/login">登录 / 注册</nuxt-link>
         <!-- 登录后 -->
-        <el-dropdown>
+        <el-dropdown v-if="false">
           <span class="el-dropdown-link">
               <img src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt="" srcset="" class="avatar">
             地球发动机
@@ -37,7 +37,6 @@ export default {};
 <style lang='less' scoped>
 header {
   box-shadow: 0 1px 3px #ccc;
-
   .main {
     width: 1000px;
     margin: 0 auto;
