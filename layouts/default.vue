@@ -21,5 +21,9 @@ a {
   text-decoration: none;
   color: black;
 }
+input{
+  outline: none;
+  border: none;
+}
 </style>
 

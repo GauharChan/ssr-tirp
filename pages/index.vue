@@ -12,10 +12,13 @@
     <!-- Tab栏加搜索框 -->
     <main>
       <el-row type="flex" class="tab">
-        <div>攻略</div>
-        <!-- <div>酒店</div>
-        <div>机票</div>-->
+        <div class="post" @click="current = 1,$refs.inputFocus.focus()">攻略</div>
+        <div class="hotel" @click="current = 2,$refs.inputFocus.focus()">酒店</div>
+        <nuxt-link to="/air" class="air" @click="current = 1">机票</nuxt-link>
       </el-row>
+      <el-input :placeholder="currentData" v-model="searchContent" ref="inputFocus" class="input-with-select">
+        <el-button class="btn" slot="append" icon="el-icon-search"></el-button>
+      </el-input>
     </main>
   </div>
 </template>
@@ -23,10 +26,18 @@
 export default {
   data() {
     return {
-      images: null
+      images: null,
+      searchContent: "",
+      current: 1
     };
   },
+  computed: {
+    currentData() {
+      return this.current == 1 ? "搜索城市" : "请输入城市搜索酒店";
+    }
+  },
   mounted() {
+    this.$refs.inputFocus.focus();
     this.$axios({
       url: "/scenics/banners"
     })
@@ -51,26 +62,49 @@ export default {
   overflow: hidden;
 }
 main {
+  width: 400px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  z-index: 999999999;
+  // background-color: #bfa;
   .tab {
-    div {
+    overflow: hidden;
+    .post,
+    .hotel,
+    .air {
       width: 50px;
       height: 50px;
-      background: #bfa;
+      color: #fff;
+      background: #4b5452;
       text-align: center;
       line-height: 50px;
-      &::after {
+      margin-right: 15px;
+      cursor: pointer;
+
+      &:after {
         content: "";
         display: block;
         width: 50px;
         height: 50px;
-        background: #bfa;
-        transform:translate(20px,6px) rotate(75deg) ;
-        position: absolute;
-        top:0px;
-        left: -11px;
+        background: #4b5452;
+        transform: translate(7px, -43px) rotate(77deg);
+        position: relative;
         z-index: -99999999;
       }
     }
+  }
+  .btn {
+    background-color: #fff;
+  }
+  ::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: rgb(149, 120, 151);
+    // font-size: 16px;
   }
 }
 </style>

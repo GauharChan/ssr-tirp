@@ -65,6 +65,14 @@ header {
           border-bottom: 6px solid #409eff;
         }
       }
+      .nuxt-link-exact-active{
+        background: #409eff;
+        color: #fff;
+        &:hover {
+          color: #fff;
+          border-bottom: 6px solid #409eff;
+        }
+      }
     }
     .userInfo {
       height: 60px;
