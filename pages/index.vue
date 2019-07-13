@@ -12,8 +12,8 @@
     <!-- Tab栏加搜索框 -->
     <main>
       <el-row type="flex" class="tab">
-        <div class="post" @click="current = 1,$refs.inputFocus.focus()">攻略</div>
-        <div class="hotel" @click="current = 2,$refs.inputFocus.focus()">酒店</div>
+        <div class="post" @click="current = 1,$refs.inputFocus.focus()" :class="{active:current === 1}">攻略</div>
+        <div class="hotel" @click="current = 2,$refs.inputFocus.focus()" :class="{active:current === 2}">酒店</div>
         <nuxt-link to="/air" class="air" @click="current = 1">机票</nuxt-link>
       </el-row>
       <el-input :placeholder="currentData" v-model="searchContent" ref="inputFocus" class="input-with-select">
@@ -74,6 +74,12 @@ main {
   // background-color: #bfa;
   .tab {
     overflow: hidden;
+    .active{
+      background: #999 !important;
+      &::after{
+        background: #999 !important;
+      }
+    }
     .post,
     .hotel,
     .air {
@@ -104,6 +110,7 @@ main {
   ::-webkit-input-placeholder {
     /* WebKit browsers */
     color: rgb(149, 120, 151);
+    letter-spacing: 3px;
     // font-size: 16px;
   }
 }
