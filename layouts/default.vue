@@ -12,6 +12,9 @@ export default {
   components: {
     Header,
     Footer
+  },
+  mounted(){
+    console.log(this.$store.state.user);
   }
 };
 </script>

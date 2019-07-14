@@ -14,12 +14,12 @@
       </nav>
       <!-- 用户信息 -->
       <div class="userInfo">
-        <nuxt-link to="/user/login">登录 / 注册</nuxt-link>
+        <nuxt-link v-if="!$store.state.user.userInfo.token" to="/user/login">登录 / 注册</nuxt-link>
         <!-- 登录后 -->
-        <el-dropdown v-if="false">
+        <el-dropdown v-else>
           <span class="el-dropdown-link">
               <img src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt="" srcset="" class="avatar">
-            地球发动机
+            {{$store.state.user.userInfo.user.nickname}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -29,10 +29,14 @@
         </el-dropdown>
       </div>
     </el-row>
+    <!-- <p>{{$store.state.user.userInfo.user.nickname }}</p> -->
   </header>
 </template>
 <script>
-export default {};
+export default {
+  mounted(){
+  }
+};
 </script>
 <style lang='less' scoped>
 header {
