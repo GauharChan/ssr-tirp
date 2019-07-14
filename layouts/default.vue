@@ -13,9 +13,6 @@ export default {
     Header,
     Footer
   },
-  mounted(){
-    console.log(this.$store.state.user);
-  }
 };
 </script>
 <style src="../assets/normalize.css"></style>

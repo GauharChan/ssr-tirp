@@ -14,6 +14,7 @@
       </nav>
       <!-- 用户信息 -->
       <div class="userInfo">
+        <!-- 判断token -->
         <nuxt-link v-if="!$store.state.user.userInfo.token" to="/user/login">登录 / 注册</nuxt-link>
         <!-- 登录后 -->
         <el-dropdown v-else>
@@ -24,17 +25,22 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click.native="handleExit">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </el-row>
-    <!-- <p>{{$store.state.user.userInfo.user.nickname }}</p> -->
   </header>
 </template>
 <script>
 export default {
-  mounted(){
+  methods:{
+    // 用户退出
+    handleExit(){
+      // console.log(this.$store.commit);
+      this.$store.commit('user/loginOut','')
+      this.$message.success('退出成功 ')
+    }
   }
 };
 </script>
