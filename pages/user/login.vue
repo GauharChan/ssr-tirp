@@ -28,7 +28,7 @@ import LoginForm from '@/components/user/loginForm.vue'
 export default {
   data() {
     return {
-      currentTab: 0
+      currentTab: 1
     };
   },
   components:{
