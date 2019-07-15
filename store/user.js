@@ -30,5 +30,15 @@ export const actions = {
       .catch(err => {
         console.log(err);
       });
+  },
+  register(store,data){
+    this.$axios({
+      method:'post',
+      url:'accounts/register',
+      data
+    })
+    .then((res) => {
+      store.commit('setUserInfo',res.data)
+    })
   }
 }
