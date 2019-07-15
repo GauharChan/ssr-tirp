@@ -19,26 +19,28 @@ export const mutations = {
 export const actions = {
   
   login(store, data) {
-    this.$axios({
+    return this.$axios({
         method: "post",
         url: "/accounts/login",
         data
       })
       .then(res => {
-        store.commit('setUserInfo', res.data)
+        const data = res.data
+        store.commit('setUserInfo', data)
+        return data
       })
-      .catch(err => {
-        console.log(err);
-      });
+      
   },
   register(store,data){
-    this.$axios({
+    return this.$axios({
       method:'post',
       url:'accounts/register',
       data
     })
     .then((res) => {
-      store.commit('setUserInfo',res.data)
+      // 成功
+      // resolved
+      store.commit('setUserInfo',res.data)  
     })
   }
 }

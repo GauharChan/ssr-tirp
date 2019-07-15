@@ -94,7 +94,6 @@ export default {
           tel: this.form.username
         }
       }).then(res => {
-        console.log(res);
         this.$confirm(`您的验证码：${res.data.code}`, "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
