@@ -37,7 +37,7 @@ export default {
   methods:{
     // 用户退出
     handleExit(){
-      // 调用store的mutations方法修改token
+      // console.log(this.$store.commit);
       this.$store.commit('user/loginOut','')
       this.$message.success('退出成功 ')
     }
@@ -53,7 +53,8 @@ header {
     .logo {
       width: 156px;
       h1 {
-        background: url(http://157.122.54.189:9093/images/logo.jpg) no-repeat center;
+        background: url(http://157.122.54.189:9093/images/logo.jpg) no-repeat
+          center;
         background-size: contain;
         height: 60px;
         margin: 0;

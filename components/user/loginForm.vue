@@ -48,11 +48,8 @@ export default {
       this.$refs.form.validate(vali => {
         if (vali) {
           this.$store.dispatch('user/login',this.form)
-          .then(() => {
-            this.$message.success("登录成功");
-            this.$router.push('/')
-          })
-          
+          this.$message.success("登录成功");
+          this.$router.push('/')
         } else {
           return false;
         }
