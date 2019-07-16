@@ -17,7 +17,7 @@ export const mutations = {
 }
 
 export const actions = {
-  
+  // 登录
   login(store, data) {
     return this.$axios({
         method: "post",
@@ -31,6 +31,7 @@ export const actions = {
       })
       
   },
+  // 注册
   register(store,data){
     return this.$axios({
       method:'post',
