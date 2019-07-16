@@ -21,7 +21,7 @@
     </el-form-item>
 
     <el-form-item class="form-item" prop="checkPass">
-      <el-input placeholder="确认密码" type="password" v-model="form.checkPass"></el-input>
+      <el-input placeholder="确认密码" @keyup.enter.native="handleRegSubmit" type="password" v-model="form.checkPass"></el-input>
     </el-form-item>
 
     <el-button class="submit" type="primary" @click="handleRegSubmit">注册</el-button>

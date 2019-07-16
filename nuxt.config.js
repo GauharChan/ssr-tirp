@@ -33,6 +33,7 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/axios',
+    '@/plugins/moment',
     { src: '@/plugins/localStorage', ssr: false }
   ],
   /*
