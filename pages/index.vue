@@ -76,6 +76,7 @@ main {
     overflow: hidden;
     .active{
       background: #999 !important;
+      color: rgb(59, 59, 59) !important;
       &::after{
         background: #999 !important;
       }
