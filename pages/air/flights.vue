@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data="onlyData" @changeData="changeData"></FlightsFilters>
 
         <!-- 航班头部布局 -->
         <FlightsListHead></FlightsListHead>
@@ -26,6 +26,7 @@
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
+        <FlightsAside></FlightsAside>
       </div>
     </el-row>
   </section>
@@ -34,30 +35,47 @@
 <script>
 import FlightsListHead from "@/components/air/flightsListHead";
 import FlightsItem from "@/components/air/flightsItem";
+import FlightsFilters from "@/components/air/flightsFilters";
+import FlightsAside from "@/components/air/flightsAside";
 
 export default {
   data() {
     return {
-      // 请求回来的机票数据
-      flightsList: [],
+      // 请求回来的总数据对象
+      flightsList: {
+        flights:[],
+        info:{},
+        options:{}
+      },
+      // 定义一个不会改变的
       pageSize: 5,
       pageIndex: 1,
       total: 0,
-      // 实际渲染的数据
-      listData:[]
+      // 实际渲染的数据请求回来的总数据对象
+      onlyData:{
+        flights:[],
+        info:{},
+        options:{}
+      },
+      listData:[],
+      changeList:[]
     };
   },
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters,
+    FlightsAside
   },
   mounted() {
     this.$axios({
       url: "airs",
       params: this.$route.query
     }).then(res => {
-      this.flightsList = res.data.flights;
-      this.total = res.data.total;
+      this.flightsList = res.data;
+      this.onlyData = {...res.data}
+      // console.log(res.data);
+      this.total = this.flightsList.flights.length;
       this.init();
     });
   },
@@ -77,7 +95,17 @@ export default {
       //  第一页  0-5 条数据    第二页  5-10条数据
       const start = (this.pageIndex - 1) * this.pageSize
       const end = start + this.pageSize
-      this.listData = this.flightsList.slice(start, end);
+      this.listData = this.flightsList.flights.slice(start, end);
+    },
+    // filters组件筛选后的数据处理
+    changeData(arr){
+      this.pageIndex = 1
+      // 如果有筛选条件，改变总数据的中的flights，不然分页会出错
+      this.flightsList.flights = arr
+      const start = (this.pageIndex - 1) * this.pageSize
+      const end = start + this.pageSize
+      this.listData = arr.slice(start, end);
+      this.total = this.flightsList.flights.length
     }
   }
 };

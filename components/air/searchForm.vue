@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     // 封装请求城市
-    searchCity(value,cb,city,code) {
+    searchCity(value, cb, city, code) {
       // 如果输入为空，则不请求
       if (value.trim().length <= 0) return;
       // 请求输入对应的数据
@@ -89,6 +89,7 @@ export default {
           let obj = {};
           obj.value = "您输入搜索的城市名有误";
           temp.push(obj);
+          this.searchForm[city] = "";
         } else {
           temp = data.map((e, i) => {
             // element中的远程搜索的匹配的列表是根据value属性这个关键字遍历显示value属性的值的，所以必须是e.value
@@ -103,7 +104,7 @@ export default {
     },
 
     // 封装选择列表城市
-    listCity(item,city,code){
+    listCity(item, city, code) {
       if (item.value === "您输入搜索的城市名有误") {
         this.searchForm[city] = "";
       } else {
@@ -114,14 +115,12 @@ export default {
 
     // tab切换时触发
     handleSearchTab(item, index) {
-      if(index === 1){
-        this.$confirm('该功能暂时还没开通，请敬请期待！','提示',{
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).catch(() => {
-        
-        })
+      if (index === 1) {
+        this.$confirm("该功能暂时还没开通，请敬请期待！", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).catch(() => {});
       }
     },
 
@@ -129,53 +128,63 @@ export default {
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDepartSearch(value, cb) {
       // 调用封装好的搜索城市方法
-      this.searchCity(value,cb,'departCity','departCode')
+      this.searchCity(value, cb, "departCity", "departCode");
     },
 
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch(value, cb) {
       // 调用封装好的搜索城市方法
-      this.searchCity(value,cb,'destCity','destCode')
+      this.searchCity(value, cb, "destCity", "destCode");
     },
 
     // 出发城市下拉选择时触发
     handleDepartSelect(item) {
       // 调用封装好的列表选择城市方法
-      this.listCity(item,'departCity','departCode')
+      this.listCity(item, "departCity", "departCode");
     },
 
     // 目标城市下拉选择时触发
     handleDestSelect(item) {
       // 调用封装好的列表选择城市方法
-      this.listCity(item,'destCity','destCode')
+      this.listCity(item, "destCity", "destCode");
     },
 
     // 确认选择日期时触发
     handleDate(value) {
       // 调用原型链上的$moment对象,moment插件
-      let time = this.$moment(value).format('YYYY-MM-DD')
-      this.searchForm.departDate = time
+      let time = this.$moment(value).format("YYYY-MM-DD");
+      this.searchForm.departDate = time;
     },
 
     // 触发和目标城市切换时触发
     handleReverse() {
-      const {departCity,departCode,destCity,destCode} = this.searchForm
-      this.searchForm.departCity = destCity
-      this.searchForm.destCity = departCity
-      this.searchForm.departCode = destCode
-      this.searchForm.destCode = departCode
+      const { departCity, departCode, destCity, destCode } = this.searchForm;
+      this.searchForm.departCity = destCity;
+      this.searchForm.destCity = departCity;
+      this.searchForm.departCode = destCode;
+      this.searchForm.destCode = departCode;
     },
 
     // 提交表单是触发
     handleSubmit() {
-      this.$axios({
-        url:'airs',
-        params:this.searchForm
-      })
-      .then((res) => {
-        console.log(res);
-      })
+      if (!this.searchForm.departCity.trim()) {
+        this.$message.warning("请输入出发城市");
+      } else if (!this.searchForm.destCity.trim()) {
+        this.$message.warning("请输入到达城市");
+      } else if (!this.searchForm.departDate.trim()) {
+        this.$message.warning("请输入出发时间");
+      }else{
+        let item = this.searchForm
+        // 把数据存到本地
+        // 首先拿本地的数据（如果有的话）
+        let local = JSON.parse(localStorage.getItem('airs')) || []
+        local.unshift(item)
+        let arr = JSON.stringify(local)
+        localStorage.setItem('airs',arr)
+        // 跳转到flights
+        this.$router.push(`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`)
+      }
     }
   },
   mounted() {}
