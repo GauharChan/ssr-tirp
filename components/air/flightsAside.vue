@@ -22,7 +22,7 @@
 
         <div class="history">
             <h5>历史查询</h5>
-            <nuxt-link to="#" v-for="(item,index) in historySearch" :key="index">
+            <nuxt-link :to="`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`" v-for="(item,index) in historySearch" :key="index">
                 <el-row type="flex" 
                 justify="space-between" 
                 align="middle"
@@ -50,7 +50,8 @@ export default {
         if(this.historySearch.length > 5){
             this.historySearch.length = 5
         }
-    }
+    },
+    
 }
 </script>
 

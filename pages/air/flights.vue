@@ -41,24 +41,24 @@ import FlightsAside from "@/components/air/flightsAside";
 export default {
   data() {
     return {
-      // 请求回来的总数据对象
+      // 会被修改的请求回来的总数据对象
       flightsList: {
-        flights:[],
-        info:{},
-        options:{}
+        flights: [],
+        info: {},
+        options: {}
       },
-      // 定义一个不会改变的
+
       pageSize: 5,
       pageIndex: 1,
       total: 0,
       // 实际渲染的数据请求回来的总数据对象
-      onlyData:{
-        flights:[],
-        info:{},
-        options:{}
+      onlyData: {
+        flights: [],
+        info: {},
+        options: {}
       },
-      listData:[],
-      changeList:[]
+      listData: [],
+      changeList: []
     };
   },
   components: {
@@ -68,45 +68,58 @@ export default {
     FlightsAside
   },
   mounted() {
-    this.$axios({
-      url: "airs",
-      params: this.$route.query
-    }).then(res => {
-      this.flightsList = res.data;
-      this.onlyData = {...res.data}
-      // console.log(res.data);
-      this.total = this.flightsList.flights.length;
-      this.init();
-    });
+    this.loadData()
   },
   methods: {
+    // 封装页面数据的请求方法
+    loadData() {
+      this.$axios({
+        url: "airs",
+        params: this.$route.query
+      }).then(res => {
+        // 会被修改的请求回来的总数据对象
+        this.flightsList = res.data;
+        // 一个不会改变的总数据对象
+        this.onlyData = { ...res.data };
+        // 总数
+        this.total = this.flightsList.flights.length;
+        // 执行分页的渲染
+        this.init();
+      });
+    },
+
     //   改变页面条数
     handleSizeChange(val) {
-      this.pageSize = val
-      this.pageIndex = 1
-      this.init()
+      this.pageSize = val;
+      this.pageIndex = 1;
+      this.init();
     },
     //   改变页码数
     handleCurrentChange(val) {
-      this.pageIndex = val
-      this.init()
+      this.pageIndex = val;
+      this.init();
     },
     init() {
       //  第一页  0-5 条数据    第二页  5-10条数据
-      const start = (this.pageIndex - 1) * this.pageSize
-      const end = start + this.pageSize
+      const start = (this.pageIndex - 1) * this.pageSize;
+      const end = start + this.pageSize;
       this.listData = this.flightsList.flights.slice(start, end);
     },
     // filters组件筛选后的数据处理
-    changeData(arr){
-      this.pageIndex = 1
+    changeData(arr) {
+      this.pageIndex = 1;
       // 如果有筛选条件，改变总数据的中的flights，不然分页会出错
-      this.flightsList.flights = arr
-      const start = (this.pageIndex - 1) * this.pageSize
-      const end = start + this.pageSize
+      this.flightsList.flights = arr;
+      const start = (this.pageIndex - 1) * this.pageSize;
+      const end = start + this.pageSize;
       this.listData = arr.slice(start, end);
-      this.total = this.flightsList.flights.length
+      this.total = this.flightsList.flights.length;
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    // 这里一定要先执行next()回调函数
+    next();
+    this.loadData();
   }
 };
 </script>
