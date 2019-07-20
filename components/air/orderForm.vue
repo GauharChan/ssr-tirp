@@ -70,6 +70,7 @@
                 </el-form>   
                 <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
             </div>
+            <input type="hidden" :value="setPrice">
         </div>
     </div>
 </template>
@@ -80,6 +81,12 @@ export default {
         insure:{
             type: Array,
             default:[]
+        },
+        data:{
+            type:Object,
+            default:{
+                seat_infos:{},
+            }
         }
     },
     data(){
@@ -100,6 +107,17 @@ export default {
                 air:this.$route.query.id,//航班id,
                 captcha: '',//手机验证码
             }
+        }
+    },
+    computed:{
+        setPrice(){
+            let price = 0
+            price = this.data.seat_infos.org_settle_price + this.data.airport_tax_audlet //机票价钱加燃油费
+            // 保险
+            price += this.orderForm.insurances.length * 30
+            // 人数
+            price = this.orderForm.users.length * price
+            this.$store.commit('air/setPrice',price)
         }
     },
     methods: {

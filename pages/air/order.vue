@@ -2,25 +2,29 @@
   <div class="container">
     <el-row type="flex" justify="space-between">
       <!-- 订单表单 -->
-      <OrderForm :insure="insure"></OrderForm>
+      <OrderForm :insure="insure" :data='data'></OrderForm>
 
       <!-- 侧边栏 -->
-      <!-- <OrderAside></OrderAside> -->
+      <OrderAside :data="data"></OrderAside>
     </el-row>
   </div>
 </template>
 
 <script>
 import OrderForm from "@/components/air/orderForm";
-// import OrderAside from "@/components/air/OrderAside.vue";
+import OrderAside from "@/components/air/OrderAside.vue";
 export default {
   components: {
     OrderForm,
-    // OrderAside
+    OrderAside
   },
   data() {
     return {
-      insure:[]
+      insure:[],
+      // 请求回来的总数据，传给aside组件
+      data:{
+        seat_infos:{}
+      }
     }
   },
   mounted(){
@@ -32,6 +36,7 @@ export default {
       }
     })
     .then((res) => {
+      this.data = res.data
       this.insure = res.data.insurances
     })
   }

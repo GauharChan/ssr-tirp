@@ -5,5 +5,9 @@ export default function ({ $axios, redirect }) {
       if(statusCode === 400){
         Message.warning(message)
       }
+      if(statusCode === 401 || statusCode === 403){
+        Message.warning(message)
+        redirect('/user/login')
+      }
     })
 }
