@@ -1,8 +1,9 @@
 export const state = () => ({
   userInfo: {
-    token:'',
-    user:{}
-  }
+    token: '',
+    user: {}
+  },
+  phoneCode: ''
 })
 
 export const mutations = {
@@ -11,8 +12,11 @@ export const mutations = {
     state.userInfo = value
   },
   // 清除token，用户退出
-  loginOut(state,value){
-    state.userInfo.token = value 
+  loginOut(state, value) {
+    state.userInfo.token = value
+  },
+  setCode(state,value){
+    state.phoneCode = value
   }
 }
 
@@ -29,19 +33,32 @@ export const actions = {
         store.commit('setUserInfo', data)
         return data
       })
-      
+
   },
   // 注册
-  register(store,data){
+  register(store, data) {
     return this.$axios({
-      method:'post',
-      url:'accounts/register',
-      data
-    })
-    .then((res) => {
-      // 成功
-      // resolved
-      store.commit('setUserInfo',res.data)  
-    })
+        method: 'post',
+        url: 'accounts/register',
+        data
+      })
+      .then((res) => {
+        // 成功
+        // resolved
+        store.commit('setUserInfo', res.data)
+      })
+  },
+  // 手机验证码
+  code(store, value) {
+    return this.$axios({
+        url: 'captchas',
+        method: "post",
+        data: {
+          tel: value
+        }
+      })
+      .then((res) => {
+        store.commit('setCode',res.data.code)
+      })
   }
 }
